@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace ModularHomeDesign.Room
 {
-	class Room
+	public class Room
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModularHomeDesign.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -58,8 +59,8 @@ namespace ModularHomeDesign.Room
 
 		public static Point SnapGridPoint(Point original)
 		{
-			double gridWidth = MainPage.GridWidth;
-			double gridHeight = MainPage.GridHeight;
+			double gridWidth = Manipulation.GridWidth;
+			double gridHeight = Manipulation.GridHeight;
 			double snapX = 0;
 			double snapY = 0;
 
