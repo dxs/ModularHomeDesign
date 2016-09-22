@@ -1,6 +1,7 @@
 ﻿using ModularHomeDesign.Room;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,20 +27,40 @@ namespace ModularHomeDesign
     public sealed partial class MainPage : Page
     {
 		private TranslateTransform dragTranslation;
+		private List<Polygon> listOfPolygon;
 
 		public MainPage()
         {
             this.InitializeComponent();
+			listOfPolygon = new List<Polygon>();
 			PopulateOneRoom();
         }
 
 		private void PopulateOneRoom()
 		{
-			Polyline line = new Polyline();
-			line.Stroke = new SolidColorBrush(Colors.Black);
-			line.StrokeThickness = 2;
-			line.Points = RoomCompute.GetPoints(new Room.Room(0));
+			dragTranslation = new TranslateTransform();
+			Polygon line = new Polygon()
+			{
+				Points = RoomCompute.GetPoints(new Room.Room(0)),
+				IsRightTapEnabled = true,
+				Stroke = new SolidColorBrush(Colors.Black),
+				StrokeThickness = 6,
+				ManipulationMode = ManipulationModes.All,
+				RenderTransform = this.dragTranslation,
+				Fill = new SolidColorBrush(Colors.Transparent)
+			};
+			line.RightTapped += Line_RightTapped;
+			line.ManipulationDelta += Line_ManipulationDelta;
+			Canvas.SetLeft(line, 50);
+			Canvas.SetTop(line, 200);
+			listOfPolygon.Add(line);
 			Plan.Children.Add(line);
+		}
+
+		private void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
+		{
+			e.Handled = true;
+			Debug.WriteLine(e.GetPosition((Polyline)sender).ToString());
 		}
 
 
@@ -47,11 +68,13 @@ namespace ModularHomeDesign
 		//	dragTranslation = new TranslateTransform();
 		//TestRectangle.RenderTransform = this.dragTranslation;
 
-		void Drag_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+		void Line_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
 		{
 			// Move the rectangle.
 			dragTranslation.X += e.Delta.Translation.X;
 			dragTranslation.Y += e.Delta.Translation.Y;
+			foreach(Polygon child in listOfPolygon)
+				child.TransformToVisual(Window.Current.Content).TransformPoint(new Point(0,0));
 		}
 	}
 }

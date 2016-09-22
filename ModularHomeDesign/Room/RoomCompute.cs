@@ -18,7 +18,6 @@ namespace ModularHomeDesign.Room
 			points.Add(new Point(a.left, a.top + a.height));
 			points.Add(new Point(a.left + a.width, a.top + a.height));
 			points.Add(new Point(a.left + a.width, a.top));
-			points.Add(new Point(a.left, a.top));
 			return points;
 		}
 	}

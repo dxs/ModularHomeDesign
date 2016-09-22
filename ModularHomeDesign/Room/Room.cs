@@ -29,10 +29,10 @@ namespace ModularHomeDesign.Room
 		public Room(int _id)
 		{
 			Id = _id;
-			left = 300;
-			top = 300;
-			width = 100;
-			height = 100;
+			left = 0;
+			top = 0;
+			width = 200;
+			height = 200;
 
 			LeftDoor = false;
 			RightDoor = false;
