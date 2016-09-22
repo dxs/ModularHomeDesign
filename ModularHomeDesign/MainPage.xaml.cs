@@ -79,7 +79,8 @@ namespace ModularHomeDesign
 		private static void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
 		{
 			e.Handled = true;
-
+			Point position = e.GetPosition(sender as Polygon);
+			Debug.WriteLine("X: {0}\tY: {1}", position.X, position.Y);
 		}
 	}
 }
