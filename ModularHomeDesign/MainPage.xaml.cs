@@ -97,11 +97,12 @@ namespace ModularHomeDesign
 			//Stick to grid
 			Polygon child = sender as Polygon;
 			SnapToGrid(child);
-			foreach(Room.Room item in listOfRoom)
-				if (item.draw == child)
-					AddRelatives(item);
 			foreach (Room.Room item in listOfRoom)
-				Debug.WriteLine(item.ToString());
+				if (item.draw == child)
+				{
+					AddRelatives(item);
+					Debug.WriteLine(item.ToString());
+				}
 		}
 
 		private void AddRelatives(Room.Room child)
@@ -158,7 +159,8 @@ namespace ModularHomeDesign
 
 		private void AddStdBox()
 		{
-			Room.Room room = new Room.Room(CurrentId++);
+			Room.Room room = new Room.Room(CurrentId++, "Room");
+			Grid panel = new Grid();
 			Polygon line = room.draw;
 			line.RightTapped += Line_RightTapped;
 			line.ManipulationDelta += Line_ManipulationDelta;
@@ -166,8 +168,21 @@ namespace ModularHomeDesign
 			line.IsTapEnabled = true;
 			Canvas.SetLeft(line, 50);
 			Canvas.SetTop(line, 50);
+
+			TextBox box = new TextBox()
+			{
+				Text = "Room",
+				RenderTransform = line.RenderTransform,
+				HorizontalAlignment = HorizontalAlignment.Center,
+				VerticalAlignment = VerticalAlignment.Center
+			};
+			Canvas.SetLeft(panel, 50);
+			Canvas.SetTop(panel, 50);
+
+			panel.Children.Add(line);
+			panel.Children.Add(box);
+			Plan.Children.Add(panel);
 			listOfRoom.Add(room);
-			Plan.Children.Add(line);
 		}
 
 		private void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)

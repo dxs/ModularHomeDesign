@@ -13,7 +13,7 @@ namespace ModularHomeDesign.Room
 	class Room
 	{
 		public int Id { get; set; }
-
+		public string Name { get; set; }
 		public double left { get; set; }
 		public double top { get; set; }
 		public double width { get; set; }
@@ -32,9 +32,10 @@ namespace ModularHomeDesign.Room
 		public Polygon draw { get; set; }
 		public TranslateTransform transform { get; set; }
 
-		public Room(int _id)
+		public Room(int _id, string _name)
 		{
 			Id = _id;
+			Name = _name;
 			left = 0;
 			top = 0;
 			width = 200;
@@ -55,7 +56,7 @@ namespace ModularHomeDesign.Room
 		public override string ToString()
 		{
 #pragma warning disable CS0168 // La variable est déclarée mais jamais utilisée
-			string a = "Id = " + this.Id + "\nPosition:\nLeft = " + this.left + "\tTop = " + this.top + "\nSize:\nWidth = " + this.width + "\tHeight = " + this.height + "\nDoor:\n\tLeft = " + this.LeftDoor + "\n\tRight = " + this.RightDoor + "\n\tTop = " + this.TopDoor + "\n\tBottom = " + this.DownDoor + "\nRooms:\n\tLeft = " + this.LeftRoomId + "\n\tRight = " + this.RightRoomId + "\n\tTop = " + this.TopRoomId + "\n\tBottom = " + this.DownRoomId;
+			string a = "Id = " + this.Id + "\tName = " + this.Name + "\nPosition:\nLeft = " + this.left + "\tTop = " + this.top + "\nSize:\nWidth = " + this.width + "\tHeight = " + this.height + "\nDoor:\n\tLeft = " + this.LeftDoor + "\n\tRight = " + this.RightDoor + "\n\tTop = " + this.TopDoor + "\n\tBottom = " + this.DownDoor + "\nRooms:\n\tLeft = " + this.LeftRoomId + "\n\tRight = " + this.RightRoomId + "\n\tTop = " + this.TopRoomId + "\n\tBottom = " + this.DownRoomId;
 #pragma warning restore CS0168 // La variable est déclarée mais jamais utilisée
 			return a;
 		}

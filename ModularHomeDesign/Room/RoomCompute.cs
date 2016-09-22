@@ -92,22 +92,22 @@ namespace ModularHomeDesign.Room
 		/// </returns>
 		public static int HasTwoCommonPoint(Room a, Room b)
 		{
-			if (a.top == b.top + b.height)
+			if (a.top == b.top + b.height && a.left == b.left)
 				Debug.WriteLine("Top");
-			if (a.top + a.height == b.top)
+			if (a.top + a.height == b.top && a.left == b.left)
 				Debug.WriteLine("Bottom");
-			if (a.left == b.left + b.width)
+			if (a.left == b.left + b.width && a.top == b.top)
 				Debug.WriteLine("Left");
-			if (a.left + a.width == b.left)
+			if (a.left + a.width == b.left && a.top == b.top)
 				Debug.WriteLine("Right");
 			
-			if (a.top == b.top + b.height)
+			if (a.top == b.top + b.height && a.left == b.left)
 				return 2;
-			if (a.top + a.height == b.top)
+			if (a.top + a.height == b.top && a.left == b.left)
 				return 4;
-			if (a.left == b.left + b.width)
+			if (a.left == b.left + b.width && a.top == b.top)
 				return 1;
-			if (a.left + a.width == b.left)
+			if (a.left + a.width == b.left && a.top == b.top)
 				return 3;
 			return 0;
 		}
