@@ -9,7 +9,7 @@
 
 	<Page.Resources>
 		<Style x:Key="CircleButtonStyle" TargetType="Button">
-			<Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+			<Setter Property="Background" Value="Black"/>
 			<Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
 			<Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundTransparentBrush}"/>
 			<Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
@@ -78,14 +78,19 @@
 	</Page.Resources>
 
 
-	<Grid x:Name="mainGrid" Background="WhiteSmoke">
+	<Grid x:Name="mainGrid" Background="white">
 		<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Plan">
 			
 		</Canvas>
 		<StackPanel HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center">
-			<Button Background="Gray" Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="Add_Click">
-				<FontIcon Glyph="&#xE109;" Foreground="Black"/>
-			</Button>
+			<Grid>
+				<Ellipse Fill="LightGray"/>
+				<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="Add_Click">
+					<Grid>
+						<FontIcon Glyph="&#xE109;" Foreground="White" FontSize="24"/>
+					</Grid>
+				</Button>
+			</Grid>
 		</StackPanel>
 	</Grid>
 </Page>

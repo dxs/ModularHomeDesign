@@ -73,21 +73,43 @@ namespace ModularHomeDesign.Room
 			else
 				snapY = original.Y + (gridHeight - original.Y % gridHeight);
 
-			Debug.WriteLine("original X: {0}, Y: {1}\tEnd X: {2}, Y_ {3}", original.X, original.Y, snapX, snapY);
+			//Debug.WriteLine("original X: {0}, Y: {1}\tEnd X: {2}, Y_ {3}", original.X, original.Y, snapX, snapY);
 			return new Point(snapX, snapY);
 		}
 
-		public static bool HasTwoCommonPoint(Room a, Room b)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns>
+		/// 0 = no, 
+		/// 1 = left,
+		/// 2 = top, 
+		/// 3 = right,
+		/// 4 = bottom 
+		/// (relative to room A)
+		/// </returns>
+		public static int HasTwoCommonPoint(Room a, Room b)
 		{
 			if (a.top == b.top + b.height)
-				return true;
+				Debug.WriteLine("Top");
 			if (a.top + a.height == b.top)
-				return true;
+				Debug.WriteLine("Bottom");
 			if (a.left == b.left + b.width)
-				return true;
+				Debug.WriteLine("Left");
 			if (a.left + a.width == b.left)
-				return true;
-			return false;
+				Debug.WriteLine("Right");
+			
+			if (a.top == b.top + b.height)
+				return 2;
+			if (a.top + a.height == b.top)
+				return 4;
+			if (a.left == b.left + b.width)
+				return 1;
+			if (a.left + a.width == b.left)
+				return 3;
+			return 0;
 		}
 	}
 }

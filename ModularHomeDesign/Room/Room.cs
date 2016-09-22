@@ -52,6 +52,14 @@ namespace ModularHomeDesign.Room
 			AddPolygon();
 		}
 
+		public override string ToString()
+		{
+#pragma warning disable CS0168 // La variable est déclarée mais jamais utilisée
+			string a = "Id = " + this.Id + "\nPosition:\nLeft = " + this.left + "\tTop = " + this.top + "\nSize:\nWidth = " + this.width + "\tHeight = " + this.height + "\nDoor:\n\tLeft = " + this.LeftDoor + "\n\tRight = " + this.RightDoor + "\n\tTop = " + this.TopDoor + "\n\tBottom = " + this.DownDoor + "\nRooms:\n\tLeft = " + this.LeftRoomId + "\n\tRight = " + this.RightRoomId + "\n\tTop = " + this.TopRoomId + "\n\tBottom = " + this.DownRoomId;
+#pragma warning restore CS0168 // La variable est déclarée mais jamais utilisée
+			return a;
+		}
+
 		private void AddPolygon()
 		{
 			transform = new TranslateTransform();

@@ -29,6 +29,7 @@ namespace ModularHomeDesign
 		private List<Room.Room> listOfRoom;
 		public static double GridHeight = 50;
 		public static double GridWidth = 50;
+		int CurrentId = 0;
 
 		public MainPage()
         {
@@ -96,12 +97,40 @@ namespace ModularHomeDesign
 			//Stick to grid
 			Polygon child = sender as Polygon;
 			SnapToGrid(child);
-			AddRelatives(child);
+			foreach(Room.Room item in listOfRoom)
+				if (item.draw == child)
+					AddRelatives(item);
+			foreach (Room.Room item in listOfRoom)
+				Debug.WriteLine(item.ToString());
 		}
 
-		private void AddRelatives(Polygon child)
+		private void AddRelatives(Room.Room child)
 		{
-			
+			foreach(Room.Room item in listOfRoom)
+			{
+				int result = RoomCompute.HasTwoCommonPoint(child, item);
+				switch(result)
+				{
+					case 1:
+						child.LeftRoomId = item.Id;
+						item.RightRoomId = child.Id;
+						break;
+					case 2:
+						child.TopRoomId = item.Id;
+						item.DownRoomId = child.Id;
+						break;
+					case 3:
+						child.RightRoomId = item.Id;
+						item.LeftRoomId = child.Id;
+						break;
+					case 4:
+						child.DownRoomId = item.Id;
+						item.TopRoomId = child.Id;
+						break;
+					default:
+						break;
+				}
+			}
 		}
 
 		private void SnapToGrid(Polygon child)
@@ -115,6 +144,8 @@ namespace ModularHomeDesign
 					TranslateTransform a = item.transform as TranslateTransform;
 					a.X = newPoint.X - GridWidth;
 					a.Y = newPoint.Y - GridHeight;
+					item.top = a.Y;
+					item.left = a.X;
 					break;
 				}
 			}
@@ -127,7 +158,7 @@ namespace ModularHomeDesign
 
 		private void AddStdBox()
 		{
-			Room.Room room = new Room.Room(0);
+			Room.Room room = new Room.Room(CurrentId++);
 			Polygon line = room.draw;
 			line.RightTapped += Line_RightTapped;
 			line.ManipulationDelta += Line_ManipulationDelta;
