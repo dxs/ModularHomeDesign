@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -11,14 +12,14 @@ namespace ModularHomeDesign.Room
 {
 	static class RoomCompute
 	{
-		public static PointCollection GetPoints(Room a)
+		public static PointCollection GetPoints(double left, double top, double height, double width)
 		{
 			PointCollection points = new PointCollection();
 
-			points.Add(new Point(a.left, a.top));
-			points.Add(new Point(a.left, a.top + a.height));
-			points.Add(new Point(a.left + a.width, a.top + a.height));
-			points.Add(new Point(a.left + a.width, a.top));
+			points.Add(new Point(left, top));
+			points.Add(new Point(left + width, top));
+			points.Add(new Point(left + width, top + height));
+			points.Add(new Point(left, top + height));
 			return points;
 		}
 		
@@ -57,10 +58,36 @@ namespace ModularHomeDesign.Room
 
 		public static Point SnapGridPoint(Point original)
 		{
-			double snapX = Math.Round(original.X / MainPage.GridWidth) * MainPage.GridWidth;
-			double snapY = Math.Round(original.Y / MainPage.GridHeight) * MainPage.GridHeight;
+			double gridWidth = MainPage.GridWidth;
+			double gridHeight = MainPage.GridHeight;
+			double snapX = 0;
+			double snapY = 0;
 
+			if (original.X % gridWidth < gridWidth / 2)
+				snapX = original.X - original.X % gridWidth;
+			else
+				snapX = original.X + (gridWidth - original.X % gridWidth);
+
+			if (original.Y % gridHeight < gridHeight / 2)
+				snapY = original.Y - original.Y % gridHeight;
+			else
+				snapY = original.Y + (gridHeight - original.Y % gridHeight);
+
+			Debug.WriteLine("original X: {0}, Y: {1}\tEnd X: {2}, Y_ {3}", original.X, original.Y, snapX, snapY);
 			return new Point(snapX, snapY);
+		}
+
+		public static bool HasTwoCommonPoint(Room a, Room b)
+		{
+			if (a.top == b.top + b.height)
+				return true;
+			if (a.top + a.height == b.top)
+				return true;
+			if (a.left == b.left + b.width)
+				return true;
+			if (a.left + a.width == b.left)
+				return true;
+			return false;
 		}
 	}
 }

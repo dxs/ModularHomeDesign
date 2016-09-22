@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 
 namespace ModularHomeDesign.Room
 {
@@ -25,6 +29,8 @@ namespace ModularHomeDesign.Room
 		public int TopRoomId { get; set; }
 		public int DownRoomId { get; set; }
 
+		public Polygon draw { get; set; }
+		public TranslateTransform transform { get; set; }
 
 		public Room(int _id)
 		{
@@ -43,6 +49,23 @@ namespace ModularHomeDesign.Room
 			RightRoomId = -1;
 			TopRoomId = -1;
 			DownRoomId = -1;
+			AddPolygon();
+		}
+
+		private void AddPolygon()
+		{
+			transform = new TranslateTransform();
+
+			draw = new Polygon()
+			{
+				Points = RoomCompute.GetPoints(this.top, this.left, this.height, this.width),
+				IsRightTapEnabled = true,
+				Stroke = new SolidColorBrush(Colors.Black),
+				StrokeThickness = 6,
+				ManipulationMode = ManipulationModes.All,
+				RenderTransform = transform,
+				Fill = new SolidColorBrush(Colors.Transparent)
+			};
 		}
 	}
 }

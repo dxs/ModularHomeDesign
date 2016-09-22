@@ -26,36 +26,64 @@ namespace ModularHomeDesign
     /// </summary>
     public sealed partial class MainPage : Page
     {
-		private Dictionary<Polygon, TranslateTransform> listOfPolygon;
+		private List<Room.Room> listOfRoom;
 		public static double GridHeight = 50;
 		public static double GridWidth = 50;
 
 		public MainPage()
         {
             this.InitializeComponent();
-			listOfPolygon = new Dictionary<Polygon, TranslateTransform>();
+			listOfRoom = new List<Room.Room>();
 			PopulateOneRoom();
+			//PopulateGrid();
         }
+
+		private void PopulateGrid()
+		{
+			for (int i = 0; i < 80; i++)
+			{
+				Rectangle a = new Rectangle()
+				{
+					Stroke = new SolidColorBrush(Colors.Red),
+					Fill = new SolidColorBrush(Colors.Red),
+					StrokeThickness = 1,
+					Width = 1,
+					Height = 800
+				};
+				Canvas.SetTop(a, 0);
+				Canvas.SetLeft(a, i*50);
+				Plan.Children.Add(a);
+			}
+			for (int i = 0; i < 50; i++)
+			{
+				Rectangle a = new Rectangle()
+				{
+					Stroke = new SolidColorBrush(Colors.Red),
+					Fill = new SolidColorBrush(Colors.Red),
+					StrokeThickness = 1,
+					Height = 1,
+					Width = 1800
+				};
+				Canvas.SetTop(a, i*50);
+				Canvas.SetLeft(a, 0);
+				Plan.Children.Add(a);
+			}
+
+		}
 
 		private void PopulateOneRoom()
 		{
 			AddStdBox();
 		}
 
-		private void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
-		{
-			e.Handled = true;
-			Debug.WriteLine(e.GetPosition((Polyline)sender).ToString());
-		}
-
 		void Line_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
 		{
 			// Move the rectangle.
-			foreach(KeyValuePair<Polygon, TranslateTransform> item in listOfPolygon)
+			foreach(Room.Room item in listOfRoom)
 			{
-				if (item.Key == sender)
+				if (item.draw == sender)
 				{
-					TranslateTransform a = item.Value as TranslateTransform;
+					TranslateTransform a = item.transform as TranslateTransform;
 					a.X += e.Delta.Translation.X;
 					a.Y += e.Delta.Translation.Y;
 					break;
@@ -67,19 +95,29 @@ namespace ModularHomeDesign
 		{
 			//Stick to grid
 			Polygon child = sender as Polygon;
+			SnapToGrid(child);
+			AddRelatives(child);
+		}
+
+		private void AddRelatives(Polygon child)
+		{
+			
+		}
+
+		private void SnapToGrid(Polygon child)
+		{
 			Point position = child.TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0));
 			Point newPoint = RoomCompute.SnapGridPoint(position);
-			foreach (KeyValuePair<Polygon, TranslateTransform> item in listOfPolygon)
+			foreach (Room.Room item in listOfRoom)
 			{
-				if (item.Key == sender)
+				if (item.draw == child)
 				{
-					TranslateTransform a = item.Value as TranslateTransform;
-					a.X = newPoint.X;
-					a.Y = newPoint.Y;
+					TranslateTransform a = item.transform as TranslateTransform;
+					a.X = newPoint.X - GridWidth;
+					a.Y = newPoint.Y - GridHeight;
 					break;
 				}
 			}
-			Debug.WriteLine("Was at X: {0}, Y : {1}\nNow at X: {2}, Y : {3}",position.X,position.Y, newPoint.X, newPoint.Y);
 		}
 
 		private void Add_Click(object sender, RoutedEventArgs e)
@@ -89,25 +127,23 @@ namespace ModularHomeDesign
 
 		private void AddStdBox()
 		{
-			TranslateTransform tmpTransform = new TranslateTransform();
-
-			Polygon line = new Polygon()
-			{
-				Points = RoomCompute.GetPoints(new Room.Room(0)),
-				IsRightTapEnabled = true,
-				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
-				ManipulationMode = ManipulationModes.All,
-				RenderTransform = tmpTransform,
-				Fill = new SolidColorBrush(Colors.Transparent)
-			};
+			Room.Room room = new Room.Room(0);
+			Polygon line = room.draw;
 			line.RightTapped += Line_RightTapped;
 			line.ManipulationDelta += Line_ManipulationDelta;
 			line.ManipulationCompleted += Line_ManipulationCompleted;
+			line.IsTapEnabled = true;
 			Canvas.SetLeft(line, 50);
 			Canvas.SetTop(line, 50);
-			listOfPolygon.Add(line, tmpTransform);
+			listOfRoom.Add(room);
 			Plan.Children.Add(line);
 		}
+
+		private void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
+		{
+			e.Handled = true;
+
+		}
+
 	}
 }
