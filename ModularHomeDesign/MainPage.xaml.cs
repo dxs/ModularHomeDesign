@@ -27,8 +27,8 @@ namespace ModularHomeDesign
     public sealed partial class MainPage : Page
     {
 		private Dictionary<Polygon, TranslateTransform> listOfPolygon;
-		public static double GridHeight = 10;
-		public static double GridWidth = 10;
+		public static double GridHeight = 50;
+		public static double GridWidth = 50;
 
 		public MainPage()
         {
@@ -74,8 +74,8 @@ namespace ModularHomeDesign
 				if (item.Key == sender)
 				{
 					TranslateTransform a = item.Value as TranslateTransform;
-					a.X += newPoint.X;
-					a.Y += newPoint.Y;
+					a.X = newPoint.X;
+					a.Y = newPoint.Y;
 					break;
 				}
 			}
