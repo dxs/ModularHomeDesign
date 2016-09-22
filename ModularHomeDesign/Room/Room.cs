@@ -19,15 +19,28 @@ namespace ModularHomeDesign.Room
 		public double width { get; set; }
 		public double height { get; set; }
 
-		public bool LeftDoor { get; set; }
-		public bool RightDoor { get; set; }
-		public bool TopDoor { get; set; }
-		public bool DownDoor { get; set; }
+		/// <summary>
+		/// true == door
+		/// false == wall
+		/// null == hole
+		/// </summary>
+		public bool? LeftDoorTop { get; set; }
+		public bool? LeftDoorBot { get; set; }
+		public bool? RightDoorTop { get; set; }
+		public bool? RightDoorBot { get; set; }
+		public bool? TopDoorLeft { get; set; }
+		public bool? TopDoorRight { get; set; }
+		public bool? BotDoorLeft { get; set; }
+		public bool? BotDoorRight { get; set; }
 
-		public int LeftRoomId { get; set; }
-		public int RightRoomId { get; set; }
-		public int TopRoomId { get; set; }
-		public int DownRoomId { get; set; }
+		public int LeftRoomTopId { get; set; }
+		public int LeftRoomBotId { get; set; }
+		public int RightRoomTopId { get; set; }
+		public int RightRoomBotId { get; set; }
+		public int TopRoomLeftId { get; set; }
+		public int TopRoomRightId { get; set; }
+		public int BotRoomLeftId { get; set; }
+		public int BotRoomRightId { get; set; }
 
 		public Polygon draw { get; set; }
 		public TranslateTransform transform { get; set; }
@@ -41,24 +54,33 @@ namespace ModularHomeDesign.Room
 			width = 200;
 			height = 200;
 
-			LeftDoor = false;
-			RightDoor = false;
-			TopDoor = false;
-			DownDoor = false;
+			LeftDoorTop = false;
+			LeftDoorBot = false;
+			RightDoorTop = false;
+			RightDoorBot = false;
+			TopDoorLeft = false;
+			TopDoorRight = false;
+			BotDoorLeft = false;
+			BotDoorRight = false;
 
-			LeftRoomId = -1;
-			RightRoomId = -1;
-			TopRoomId = -1;
-			DownRoomId = -1;
+			LeftRoomTopId = -1;
+			LeftRoomBotId = -1;
+			RightRoomTopId = -1;
+			RightRoomBotId = -1;
+			TopRoomLeftId = -1;
+			TopRoomRightId = -1;
+			BotRoomLeftId = -1;
+			BotRoomRightId = -1;
+
 			AddPolygon();
 		}
 
 		public override string ToString()
 		{
 #pragma warning disable CS0168 // La variable est déclarée mais jamais utilisée
-			string a = "Id = " + this.Id + "\tName = " + this.Name + "\nPosition:\nLeft = " + this.left + "\tTop = " + this.top + "\nSize:\nWidth = " + this.width + "\tHeight = " + this.height + "\nDoor:\n\tLeft = " + this.LeftDoor + "\n\tRight = " + this.RightDoor + "\n\tTop = " + this.TopDoor + "\n\tBottom = " + this.DownDoor + "\nRooms:\n\tLeft = " + this.LeftRoomId + "\n\tRight = " + this.RightRoomId + "\n\tTop = " + this.TopRoomId + "\n\tBottom = " + this.DownRoomId;
+			//string a = "Id = " + this.Id + "\tName = " + this.Name + "\nPosition:\nLeft = " + this.left + "\tTop = " + this.top + "\nSize:\nWidth = " + this.width + "\tHeight = " + this.height + "\nDoor:\n\tLeft = " + this.LeftDoor + "\n\tRight = " + this.RightDoor + "\n\tTop = " + this.TopDoor + "\n\tBottom = " + this.DownDoor + "\nRooms:\n\tLeft = " + this.LeftRoomId + "\n\tRight = " + this.RightRoomId + "\n\tTop = " + this.TopRoomId + "\n\tBottom = " + this.DownRoomId;
 #pragma warning restore CS0168 // La variable est déclarée mais jamais utilisée
-			return a;
+			return "";
 		}
 
 		private void AddPolygon()

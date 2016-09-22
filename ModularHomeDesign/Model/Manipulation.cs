@@ -76,12 +76,6 @@ namespace ModularHomeDesign.Model
 			//Stick to grid
 			Polygon child = sender as Polygon;
 			SnapToGrid(child);
-			foreach (Room.Room item in listOfRoom)
-				if (item.draw == child)
-				{
-					AddRelatives(item);
-					Debug.WriteLine(item.ToString());
-				}
 		}
 
 		public static void AddRelatives(Room.Room child)
@@ -92,20 +86,20 @@ namespace ModularHomeDesign.Model
 				switch (result)
 				{
 					case 1:
-						child.LeftRoomId = item.Id;
-						item.RightRoomId = child.Id;
+						child.LeftRoomTopId = item.Id;
+						item.RightRoomTopId = child.Id;
 						break;
 					case 2:
-						child.TopRoomId = item.Id;
-						item.DownRoomId = child.Id;
+						child.TopRoomLeftId = item.Id;
+						item.BotRoomLeftId = child.Id;
 						break;
 					case 3:
-						child.RightRoomId = item.Id;
-						item.LeftRoomId = child.Id;
+						child.RightRoomTopId = item.Id;
+						item.LeftRoomTopId = child.Id;
 						break;
 					case 4:
-						child.DownRoomId = item.Id;
-						item.TopRoomId = child.Id;
+						child.BotRoomLeftId = item.Id;
+						item.TopRoomLeftId = child.Id;
 						break;
 					default:
 						break;
