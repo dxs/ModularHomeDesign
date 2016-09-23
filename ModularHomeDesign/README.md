@@ -1,14 +1,14 @@
 ## Testing process
 In order to always keep the same functionality, here are steps that should works in order to preserve a user friendly interface
 
-###Box Movements
+### Box Movements
 * Single box movement along both axis
 * Single box Snipping to grid
 * Dual box snipping together
 * Dual boxes movement together with pinning tool
 * Multiples boxes movement with multiple fingers
 
-###Box lines
+### Box lines
 * Single box suppress a wall
 * Single box suppress two opposite walls
 * Single box suppress 4 walls
@@ -17,7 +17,7 @@ In order to always keep the same functionality, here are steps that should works
 * Single box add 4 doors
 * Dual boxes suppress walls
 * Dual boxes add doors
-* 
-###Box Text
+
+### Box Text
 * Rename a box
 * *One label for two adjacent room that has no wall between
