@@ -14,6 +14,8 @@ namespace ModularHomeDesign.Room
 {
 	class Slots
 	{
+		private static double diff = 2;
+		private static double st = 4;
 
 		public static Polyline Slot1(double _left, double _top, bool? _isDoor)
 		{
@@ -24,8 +26,8 @@ namespace ModularHomeDesign.Room
 			if (_isDoor == false)//Wall
 				col = new PointCollection()
 				{
-					new Point(_left, _top),
-					new Point(_left + Manipulation.GridWidth*4, _top)
+					new Point(_left-diff, _top),
+					new Point(_left + Manipulation.GridWidth*4+diff, _top)
 				};
 
 			if (_isDoor == true)//Door
@@ -35,7 +37,7 @@ namespace ModularHomeDesign.Room
 			{
 				IsRightTapEnabled = true,
 				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
+				StrokeThickness = st,
 				ManipulationMode = ManipulationModes.All,
 				Points = col
 			};
@@ -51,8 +53,8 @@ namespace ModularHomeDesign.Room
 			if (_isDoor == false)//Wall
 				col = new PointCollection()
 				{
-					new Point(_left+Manipulation.GridWidth*4, _top),
-					new Point(_left + Manipulation.GridWidth*4, _top+Manipulation.GridHeight*4)
+					new Point(_left+Manipulation.GridWidth*4, _top-diff),
+					new Point(_left + Manipulation.GridWidth*4, _top+Manipulation.GridHeight*4+diff)
 				};
 
 			if (_isDoor == true)//Door
@@ -62,7 +64,7 @@ namespace ModularHomeDesign.Room
 			{
 				IsRightTapEnabled = true,
 				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
+				StrokeThickness = st,
 				ManipulationMode = ManipulationModes.All,
 				Points = col
 			};
@@ -78,8 +80,8 @@ namespace ModularHomeDesign.Room
 			if (_isDoor == false)//Wall
 				col = new PointCollection()
 				{
-					new Point(_left + Manipulation.GridWidth*4, _top+Manipulation.GridHeight*4),
-					new Point(_left, _top+Manipulation.GridHeight*4)
+					new Point(_left + Manipulation.GridWidth*4+diff, _top+Manipulation.GridHeight*4),
+					new Point(_left-diff, _top+Manipulation.GridHeight*4)
 				};
 
 			if (_isDoor == true)//Door
@@ -89,7 +91,7 @@ namespace ModularHomeDesign.Room
 			{
 				IsRightTapEnabled = true,
 				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
+				StrokeThickness = st,
 				ManipulationMode = ManipulationModes.All,
 				Points = col
 			};
@@ -105,8 +107,8 @@ namespace ModularHomeDesign.Room
 			if (_isDoor == false)//Wall
 				col = new PointCollection()
 				{
-					new Point(_left, _top+Manipulation.GridHeight*4),
-					new Point(_left , _top)
+					new Point(_left, _top+Manipulation.GridHeight*4+diff),
+					new Point(_left , _top-diff)
 				};
 
 			if (_isDoor == true)//Door
@@ -116,7 +118,7 @@ namespace ModularHomeDesign.Room
 			{
 				IsRightTapEnabled = true,
 				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
+				StrokeThickness = st,
 				ManipulationMode = ManipulationModes.All,
 				Points = col
 			};

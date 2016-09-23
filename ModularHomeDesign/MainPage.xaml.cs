@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using static ModularHomeDesign.Model.Manipulation;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,8 +31,8 @@ namespace ModularHomeDesign
 		public MainPage()
         {
             this.InitializeComponent();
-			Manipulation.listOfRoom = new List<Room.Room>();         
-			Manipulation.PopulateGrid(Plan);
+			listOfRoom = new List<Room.Room>();
+			//PopulateGrid(Plan);
 			PopulateOneRoom();
         }
 
@@ -74,18 +75,45 @@ namespace ModularHomeDesign
 
 			foreach (Polyline inLine in room.lines)
 			{
+				inLine.RightTapped += InLine_RightTapped;
 				panel.Children.Add(inLine);
 			}
 
 			Plan.Children.Add(panel);
-			Manipulation.listOfRoom.Add(room);
+			listOfRoom.Add(room);
+		}
+
+		private void InLine_RightTapped(object sender, RightTappedRoutedEventArgs e)
+		{
+			if (sender == null)
+				return;
+			foreach(Room.Room room in listOfRoom)
+			{
+				if (room == null)
+					continue;
+
+				foreach(Polyline line in room.lines)
+				{
+					if (line == null)
+						continue;
+
+					if (line == sender as Polyline)
+					{
+						int lineId = 1;
+						if (line.Fill == new SolidColorBrush(Colors.Black))
+							lineId = ChangeSelection(room.Id, line);
+						((sender as Polyline).Parent as Grid).Children.Remove(sender as Polyline);
+						//((sender as Polyline).Parent as Grid).Children.Add(room.lines[1]);
+						break;
+					}
+				}
+			}
 		}
 
 		private static void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
 		{
 			e.Handled = true;
 			Point position = e.GetPosition(sender as Polyline);
-
 			Debug.WriteLine("X: {0}\tY: {1}", position.X, position.Y);
 		}
 	}

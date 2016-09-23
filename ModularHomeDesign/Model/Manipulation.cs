@@ -124,5 +124,27 @@ namespace ModularHomeDesign.Model
 				}
 			}
 		}
+
+		public static int ChangeSelection(int _id, Polyline _line)
+		{
+			Room.Room tmp = null;
+			foreach (Room.Room r in listOfRoom)
+				if (r.Id == _id)
+					tmp = r;
+			if (tmp == null)
+				return 0;
+			for(int i = 0; i < 4; i++)
+			{
+				if (tmp.lines[i] == _line)
+				{
+					if (tmp.lines[i].Fill == new SolidColorBrush(Colors.Black))
+						tmp.lines[i].Fill = new SolidColorBrush(Colors.Transparent);
+					else
+						tmp.lines[i].Fill = new SolidColorBrush(Colors.Black);
+					return i + 1;
+				}
+			}
+			return 0;
+		}
 	}
 }
