@@ -8,6 +8,7 @@
     mc:Ignorable="d">
 
 	<Page.Resources>
+
 		<Style x:Key="CircleButtonStyle" TargetType="Button">
 			<Setter Property="Background" Value="Black"/>
 			<Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
@@ -88,6 +89,14 @@
 				<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="Add_Click">
 					<Grid>
 						<FontIcon Glyph="&#xE109;" Foreground="White" FontSize="24"/>
+					</Grid>
+				</Button>
+			</Grid>
+			<Grid>
+				<Ellipse Fill="LightGray" Name="EllipsePin"/>
+				<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="MoveAll">
+					<Grid>
+						<FontIcon Glyph="&#xE718;" Foreground="White" FontSize="24"/>
 					</Grid>
 				</Button>
 			</Grid>

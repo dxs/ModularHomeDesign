@@ -28,10 +28,12 @@ namespace ModularHomeDesign
     /// </summary>
     public sealed partial class MainPage : Page
     {
+		public static bool IsMoveAll = false;
 		public MainPage()
         {
             this.InitializeComponent();
 			listOfRoom = new List<Room.Room>();
+
 			//PopulateGrid(Plan);
 			PopulateOneRoom();
         }
@@ -46,14 +48,25 @@ namespace ModularHomeDesign
 			AddStdBox();
 		}
 
+		public void MoveAll(object sender, RoutedEventArgs e)
+		{
+			IsMoveAll = !IsMoveAll;
+			if (IsMoveAll)
+				EllipsePin.Fill = new SolidColorBrush(Colors.LightSalmon);
+			else
+				EllipsePin.Fill = new SolidColorBrush(Colors.LightGray);
+
+			Debug.WriteLine("Pin or UnPin");
+		}
+
 		public void AddStdBox()
 		{
-			Room.Room room = new Room.Room(Manipulation.CurrentId++, "Room");
+			Room.Room room = new Room.Room(CurrentId++, "Room");
 			Grid panel = new Grid();
 			Polygon line = room.draw;
 			line.RightTapped += Line_RightTapped;
-			line.ManipulationDelta += Manipulation.Line_ManipulationDelta;
-			line.ManipulationCompleted += Manipulation.Line_ManipulationCompleted;
+			line.ManipulationDelta += Line_ManipulationDelta;
+			line.ManipulationCompleted += Line_ManipulationCompleted;
 			line.IsTapEnabled = true;
 			Canvas.SetLeft(line, 50);
 			Canvas.SetTop(line, 50);

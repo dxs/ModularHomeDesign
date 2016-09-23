@@ -61,12 +61,13 @@ namespace ModularHomeDesign.Model
 			// Move the rectangle.
 			foreach (Room.Room item in listOfRoom)
 			{
-				if (item.draw == sender)
+				if (item.draw == sender || MainPage.IsMoveAll)
 				{
 					TranslateTransform a = item.transform as TranslateTransform;
 					a.X += e.Delta.Translation.X;
 					a.Y += e.Delta.Translation.Y;
-					break;
+					if(MainPage.IsMoveAll == false)
+						break;
 				}
 			}
 		}
@@ -109,18 +110,19 @@ namespace ModularHomeDesign.Model
 
 		public static void SnapToGrid(Polygon child)
 		{
-			Point position = child.TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0));
-			Point newPoint = Compute.SnapGridPoint(position);
 			foreach (Room.Room item in listOfRoom)
 			{
-				if (item.draw == child)
+				Point position = item.draw.TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0));
+				Point newPoint = Compute.SnapGridPoint(position);
+				if (item.draw == child || MainPage.IsMoveAll)
 				{
 					TranslateTransform a = item.transform as TranslateTransform;
 					a.X = newPoint.X - GridWidth;
 					a.Y = newPoint.Y - GridHeight;
 					item.top = a.Y;
 					item.left = a.X;
-					break;
+					if (MainPage.IsMoveAll == false)
+						break;
 				}
 			}
 		}
