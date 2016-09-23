@@ -17,3 +17,7 @@ In order to always keep the same functionality, here are steps that should works
 * Single box add 4 doors
 * Dual boxes suppress walls
 * Dual boxes add doors
+* 
+###Box Text
+* Rename a box
+* *One label for two adjacent room that has no wall between
