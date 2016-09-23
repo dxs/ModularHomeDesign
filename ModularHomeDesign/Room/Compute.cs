@@ -11,8 +11,16 @@ using Windows.UI.Xaml.Media;
 
 namespace ModularHomeDesign.Room
 {
-	static class RoomCompute
+	static class Compute
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="top"></param>
+		/// <param name="height"></param>
+		/// <param name="width"></param>
+		/// <returns></returns>
 		public static PointCollection GetPoints(double left, double top, double height, double width)
 		{
 			PointCollection points = new PointCollection();

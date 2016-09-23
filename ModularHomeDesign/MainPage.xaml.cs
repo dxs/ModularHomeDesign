@@ -31,7 +31,7 @@ namespace ModularHomeDesign
         {
             this.InitializeComponent();
 			Manipulation.listOfRoom = new List<Room.Room>();         
-			//PopulateGrid(Plan);
+			Manipulation.PopulateGrid(Plan);
 			PopulateOneRoom();
         }
 
@@ -69,9 +69,14 @@ namespace ModularHomeDesign
 			};
 			Canvas.SetLeft(panel, 50);
 			Canvas.SetTop(panel, 50);
-
 			panel.Children.Add(line);
 			panel.Children.Add(box);
+
+			foreach (Polyline inLine in room.lines)
+			{
+				panel.Children.Add(inLine);
+			}
+
 			Plan.Children.Add(panel);
 			Manipulation.listOfRoom.Add(room);
 		}
@@ -79,7 +84,8 @@ namespace ModularHomeDesign
 		private static void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
 		{
 			e.Handled = true;
-			Point position = e.GetPosition(sender as Polygon);
+			Point position = e.GetPosition(sender as Polyline);
+
 			Debug.WriteLine("X: {0}\tY: {1}", position.X, position.Y);
 		}
 	}

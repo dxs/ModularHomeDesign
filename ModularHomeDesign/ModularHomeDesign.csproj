@@ -104,7 +104,8 @@
     <Compile Include="Model\Manipulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room\Room.cs" />
-    <Compile Include="Room\RoomCompute.cs" />
+    <Compile Include="Room\Compute.cs" />
+    <Compile Include="Room\Slots.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

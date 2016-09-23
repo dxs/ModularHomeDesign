@@ -29,8 +29,8 @@ namespace ModularHomeDesign.Model
 			{
 				Rectangle a = new Rectangle()
 				{
-					Stroke = new SolidColorBrush(Colors.Red),
-					Fill = new SolidColorBrush(Colors.Red),
+					Stroke = new SolidColorBrush(Colors.Red) { Opacity = 0.3 },
+					Fill = new SolidColorBrush(Colors.Red) { Opacity = 0.3 },
 					StrokeThickness = 1,
 					Width = 1,
 					Height = 800
@@ -43,8 +43,8 @@ namespace ModularHomeDesign.Model
 			{
 				Rectangle a = new Rectangle()
 				{
-					Stroke = new SolidColorBrush(Colors.Red),
-					Fill = new SolidColorBrush(Colors.Red),
+					Stroke = new SolidColorBrush(Colors.Red) { Opacity = 0.3 },
+					Fill = new SolidColorBrush(Colors.Red) { Opacity = 0.3 },
 					StrokeThickness = 1,
 					Height = 1,
 					Width = 1800
@@ -82,24 +82,24 @@ namespace ModularHomeDesign.Model
 		{
 			foreach (Room.Room item in listOfRoom)
 			{
-				int result = RoomCompute.HasTwoCommonPoint(child, item);
+				int result = Compute.HasTwoCommonPoint(child, item);
 				switch (result)
 				{
 					case 1:
-						child.LeftRoomTopId = item.Id;
-						item.RightRoomTopId = child.Id;
+						child.LeftRoomId = item.Id;
+						item.RightRoomId = child.Id;
 						break;
 					case 2:
-						child.TopRoomLeftId = item.Id;
-						item.BotRoomLeftId = child.Id;
+						child.TopRoomId = item.Id;
+						item.BotRoomId = child.Id;
 						break;
 					case 3:
-						child.RightRoomTopId = item.Id;
-						item.LeftRoomTopId = child.Id;
+						child.RightRoomId = item.Id;
+						item.LeftRoomId = child.Id;
 						break;
 					case 4:
-						child.BotRoomLeftId = item.Id;
-						item.TopRoomLeftId = child.Id;
+						child.BotRoomId = item.Id;
+						item.TopRoomId = child.Id;
 						break;
 					default:
 						break;
@@ -110,7 +110,7 @@ namespace ModularHomeDesign.Model
 		public static void SnapToGrid(Polygon child)
 		{
 			Point position = child.TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0));
-			Point newPoint = RoomCompute.SnapGridPoint(position);
+			Point newPoint = Compute.SnapGridPoint(position);
 			foreach (Room.Room item in listOfRoom)
 			{
 				if (item.draw == child)

@@ -24,25 +24,18 @@ namespace ModularHomeDesign.Room
 		/// false == wall
 		/// null == hole
 		/// </summary>
-		public bool? LeftDoorTop { get; set; }
-		public bool? LeftDoorBot { get; set; }
-		public bool? RightDoorTop { get; set; }
-		public bool? RightDoorBot { get; set; }
-		public bool? TopDoorLeft { get; set; }
-		public bool? TopDoorRight { get; set; }
-		public bool? BotDoorLeft { get; set; }
-		public bool? BotDoorRight { get; set; }
+		public bool? LeftDoor { get; set; }
+		public bool? RightDoor { get; set; }
+		public bool? TopDoor { get; set; }
+		public bool? BotDoor { get; set; }
 
-		public int LeftRoomTopId { get; set; }
-		public int LeftRoomBotId { get; set; }
-		public int RightRoomTopId { get; set; }
-		public int RightRoomBotId { get; set; }
-		public int TopRoomLeftId { get; set; }
-		public int TopRoomRightId { get; set; }
-		public int BotRoomLeftId { get; set; }
-		public int BotRoomRightId { get; set; }
+		public int LeftRoomId { get; set; }
+		public int RightRoomId { get; set; }
+		public int TopRoomId { get; set; }
+		public int BotRoomId { get; set; }
 
 		public Polygon draw { get; set; }
+		public List<Polyline> lines { get; set; }
 		public TranslateTransform transform { get; set; }
 
 		public Room(int _id, string _name)
@@ -54,25 +47,18 @@ namespace ModularHomeDesign.Room
 			width = 200;
 			height = 200;
 
-			LeftDoorTop = false;
-			LeftDoorBot = false;
-			RightDoorTop = false;
-			RightDoorBot = false;
-			TopDoorLeft = false;
-			TopDoorRight = false;
-			BotDoorLeft = false;
-			BotDoorRight = false;
+			LeftDoor = false;
+			RightDoor = false;
+			TopDoor = false;
+			BotDoor = false;
 
-			LeftRoomTopId = -1;
-			LeftRoomBotId = -1;
-			RightRoomTopId = -1;
-			RightRoomBotId = -1;
-			TopRoomLeftId = -1;
-			TopRoomRightId = -1;
-			BotRoomLeftId = -1;
-			BotRoomRightId = -1;
+			LeftRoomId = -1;
+			RightRoomId = -1;
+			TopRoomId = -1;
+			BotRoomId = -1;
 
 			AddPolygon();
+			SetPolyline();
 		}
 
 		public override string ToString()
@@ -89,14 +75,25 @@ namespace ModularHomeDesign.Room
 
 			draw = new Polygon()
 			{
-				Points = RoomCompute.GetPoints(this.top, this.left, this.height, this.width),
+				Points = Compute.GetPoints(this.top, this.left, this.height, this.width),
 				IsRightTapEnabled = true,
-				Stroke = new SolidColorBrush(Colors.Black),
-				StrokeThickness = 6,
+				Stroke = new SolidColorBrush(Colors.Transparent),
+				StrokeThickness = 0,
 				ManipulationMode = ManipulationModes.All,
 				RenderTransform = transform,
 				Fill = new SolidColorBrush(Colors.Transparent)
 			};
+		}
+
+
+		private void SetPolyline()
+		{
+			lines = Slots.GetAllWall(left, top);
+			foreach(Polyline line in lines)
+			{
+				line.ManipulationMode = ManipulationModes.All;
+				line.RenderTransform = transform;
+			}
 		}
 	}
 }
