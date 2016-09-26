@@ -29,6 +29,7 @@ namespace ModularHomeDesign
     public sealed partial class MainPage : Page
     {
 		public static bool IsMoveAll = false;
+		public static bool IsAddDoor = false;
 		public MainPage()
         {
             this.InitializeComponent();
@@ -48,6 +49,15 @@ namespace ModularHomeDesign
 			AddStdBox();
 		}
 
+		public void AddDoor(object sender, RoutedEventArgs e)
+		{
+			IsAddDoor = !IsAddDoor;
+			if(IsAddDoor)
+				EllipseDoor.Fill = new SolidColorBrush(Colors.LightSalmon);
+			else
+				EllipseDoor.Fill = new SolidColorBrush(Colors.LightGray);
+		}
+
 		public void MoveAll(object sender, RoutedEventArgs e)
 		{
 			IsMoveAll = !IsMoveAll;
@@ -59,17 +69,15 @@ namespace ModularHomeDesign
 			Debug.WriteLine("Pin or UnPin");
 		}
 
-		public void AddStdBox()
+		public void AddStdBox(Room.Room room = null)
 		{
-			Room.Room room = new Room.Room(CurrentId++, "Room");
+			if(room == null)
+				room = new Room.Room(CurrentId++);
 			Grid panel = new Grid();
 			Polygon line = room.draw;
-			line.RightTapped += Line_RightTapped;
 			line.ManipulationDelta += Line_ManipulationDelta;
 			line.ManipulationCompleted += Line_ManipulationCompleted;
 			line.IsTapEnabled = true;
-			Canvas.SetLeft(line, 50);
-			Canvas.SetTop(line, 50);
 
 			TextBox box = new TextBox()
 			{
@@ -83,12 +91,12 @@ namespace ModularHomeDesign
 			};
 			Canvas.SetLeft(panel, 50);
 			Canvas.SetTop(panel, 50);
-			panel.Children.Add(line);
+				panel.Children.Add(line);
 			panel.Children.Add(box);
 
 			foreach (Polyline inLine in room.lines)
 			{
-				inLine.RightTapped += InLine_RightTapped;
+				inLine.Tapped += InLine_RightTapped;
 				panel.Children.Add(inLine);
 			}
 
@@ -96,38 +104,98 @@ namespace ModularHomeDesign
 			listOfRoom.Add(room);
 		}
 
-		private void InLine_RightTapped(object sender, RightTappedRoutedEventArgs e)
+		private void InLine_RightTapped(object sender, TappedRoutedEventArgs e)
 		{
-			if (sender == null)
-				return;
-			foreach(Room.Room room in listOfRoom)
+			
+			if (!IsAddDoor)
 			{
-				if (room == null)
-					continue;
-
-				foreach(Polyline line in room.lines)
+				bool breakMe = false;
+				foreach (Room.Room room in listOfRoom)
 				{
-					if (line == null)
-						continue;
-
-					if (line == sender as Polyline)
-					{
-						int lineId = 1;
-						if (line.Fill == new SolidColorBrush(Colors.Black))
-							lineId = ChangeSelection(room.Id, line);
-						((sender as Polyline).Parent as Grid).Children.Remove(sender as Polyline);
-						//((sender as Polyline).Parent as Grid).Children.Add(room.lines[1]);
+					foreach (Polyline line in room.lines)
+						if (line == sender as Polyline)
+						{
+							if (line.Fill == new SolidColorBrush(Colors.Black))
+								DeleteSelection(room.Id, line);
+							((sender as Polyline).Parent as Grid).Children.Remove(sender as Polyline);
+							breakMe = true;
+							break;
+						}
+					if (breakMe)
 						break;
-					}
 				}
 			}
-		}
-
-		private static void Line_RightTapped(object sender, RightTappedRoutedEventArgs e)
-		{
-			e.Handled = true;
-			Point position = e.GetPosition(sender as Polyline);
-			Debug.WriteLine("X: {0}\tY: {1}", position.X, position.Y);
+			else//Add a door
+			{
+				bool breakMe = false;
+				Room.Room tmp = null;
+				Polyline tmpLine = null;
+				foreach (Room.Room r in listOfRoom)
+				{
+					foreach (Polyline line in r.lines)
+						if (line == sender as Polyline)
+						{
+							tmp = r;
+							tmpLine = line;
+							Plan.Children.Remove((sender as Polyline).Parent as Grid);
+							listOfRoom.Remove(r);
+							breakMe = true;
+							break;
+						}
+					if (breakMe)
+						break;
+				}
+				if(tmp != null && tmpLine != null)
+				{
+					/*Check if line is horizontal or vertical*/
+					/*Utilisation d'une soustraction puis normalisation pour 
+					 avoir un coef inverseur si necessaire afin de creer la porte dans le bon sens*/
+					tmp.lines.Remove(tmpLine);
+					double coefInverseur = 0;
+					if (tmpLine.Points[0].X == tmpLine.Points[1].X)//Vertical
+					{
+						coefInverseur = tmpLine.Points[1].Y - tmpLine.Points[0].Y / Math.Abs(tmpLine.Points[1].Y - tmpLine.Points[0].Y);
+						tmp.lines.Add(new Polyline()
+						{
+							Points = new PointCollection()
+							{
+								new Point(tmpLine.Points[0].X, tmpLine.Points[0].Y),
+								new Point(tmpLine.Points[0].X, tmpLine.Points[0].Y + coefInverseur*GridHeight/4)
+							}
+						});
+						tmp.lines.Add(new Polyline()
+						{
+							Points = new PointCollection()
+							{
+								new Point(tmpLine.Points[1].X, tmpLine.Points[1].Y),
+								new Point(tmpLine.Points[1].X, tmpLine.Points[1].Y - coefInverseur*GridHeight/4)
+							}
+						});
+					}
+					else//Horizontal
+					{
+						coefInverseur = tmpLine.Points[1].X - tmpLine.Points[0].X;
+						coefInverseur /= Math.Abs(coefInverseur);
+						tmp.lines.Add(new Polyline()
+						{
+							Points = new PointCollection()
+							{
+								new Point(tmpLine.Points[0].X, tmpLine.Points[0].Y),
+								new Point(tmpLine.Points[0].X + coefInverseur*GridWidth/4, tmpLine.Points[0].Y)
+							}
+						});
+						tmp.lines.Add(new Polyline()
+						{
+							Points = new PointCollection()
+							{
+								new Point(tmpLine.Points[1].X, tmpLine.Points[1].Y),
+								new Point(tmpLine.Points[1].X - coefInverseur*GridWidth/4, tmpLine.Points[1].Y)
+							}
+						});
+					}
+					AddStdBox(Room.Room.CopyTo(tmp));
+				}
+			}
 		}
 	}
 }

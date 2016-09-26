@@ -83,23 +83,42 @@
 		<Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Plan">
 			
 		</Canvas>
+		
 		<StackPanel HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center">
-			<Grid>
-				<Ellipse Fill="LightGray"/>
-				<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="Add_Click">
-					<Grid>
-						<FontIcon Glyph="&#xE109;" Foreground="White" FontSize="24"/>
-					</Grid>
-				</Button>
-			</Grid>
-			<Grid>
-				<Ellipse Fill="LightGray" Name="EllipsePin"/>
-				<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="MoveAll">
-					<Grid>
-						<FontIcon Glyph="&#xE718;" Foreground="White" FontSize="24"/>
-					</Grid>
-				</Button>
-			</Grid>
+			<StackPanel Margin="10">
+				<Grid>
+					<Ellipse Fill="LightGray" Width="50" Height="50" />
+					<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="Add_Click">
+						<Grid>
+							<FontIcon Glyph="&#xE109;" Foreground="White" FontSize="24"/>
+						</Grid>
+					</Button>
+				</Grid>
+				<TextBlock Text="ADD" HorizontalAlignment="Center" Foreground="Gray"/>
+			</StackPanel>
+			<StackPanel Margin="10">
+				<Grid>
+					<Ellipse Fill="LightGray" Name="EllipsePin" Width="50" Height="50"/>
+					<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="MoveAll">
+						<Grid>
+							<FontIcon Glyph="&#xE718;" Foreground="White" FontSize="24"/>
+						</Grid>
+					</Button>
+				</Grid>
+				<TextBlock Text="MOVE" Foreground="Gray" HorizontalAlignment="Center"/>
+			</StackPanel>
+			
+			<StackPanel Margin="10">
+				<Grid>
+					<Ellipse Fill="LightGray" Name="EllipseDoor" Width="50" Height="50"/>
+					<Button Style="{StaticResource CircleButtonStyle}" Width="50" Height="50" Click="AddDoor">
+						<Grid>
+							<FontIcon Glyph="&#xE78B;" Foreground="White" FontSize="24"/>
+						</Grid>
+					</Button>
+				</Grid>
+				<TextBlock Text="DOOR" Foreground="Gray" HorizontalAlignment="Center"/>
+			</StackPanel>
 		</StackPanel>
 	</Grid>
 </Page>

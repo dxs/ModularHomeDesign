@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -38,15 +39,16 @@ namespace ModularHomeDesign.Room
 		public List<Polyline> lines { get; set; }
 		public TranslateTransform transform { get; set; }
 
-		public Room(int _id, string _name)
+		public Room(int _id)
 		{
 			Id = _id;
-			Name = _name;
+			Name = "Room";
 			left = 0;
 			top = 0;
 			width = 200;
 			height = 200;
-
+			lines = new List<Polyline>();
+			lines = Slots.GetAllWall(left, top);
 			LeftDoor = false;
 			RightDoor = false;
 			TopDoor = false;
@@ -59,6 +61,13 @@ namespace ModularHomeDesign.Room
 
 			AddPolygon();
 			SetPolyline();
+		}
+
+		public Room(int _id, string _name)
+		{
+			Id = _id;
+			Name = _name;
+			AddPolygon();
 		}
 
 		public override string ToString()
@@ -88,12 +97,44 @@ namespace ModularHomeDesign.Room
 
 		private void SetPolyline()
 		{
-			lines = Slots.GetAllWall(left, top);
 			foreach(Polyline line in lines)
 			{
 				line.ManipulationMode = ManipulationModes.All;
 				line.RenderTransform = transform;
 			}
+		}
+
+		public static Room CopyTo(Room old)
+		{
+			Room newRoom = new Room(old.Id, old.Name);
+			newRoom.BotDoor = old.BotDoor;
+			newRoom.LeftDoor = old.LeftDoor;
+			newRoom.RightDoor = old.RightDoor;
+			newRoom.TopDoor = old.TopDoor;
+
+			newRoom.BotRoomId = old.BotRoomId;
+			newRoom.TopRoomId = old.TopRoomId;
+			newRoom.LeftRoomId = old.LeftRoomId;
+			newRoom.RightRoomId = old.RightRoomId;
+
+			newRoom.width = old.width;
+			newRoom.height = old.height;
+			newRoom.top = old.top;
+			newRoom.left = old.left;
+			newRoom.lines = new List<Polyline>();
+			foreach (Polyline line in old.lines)
+				newRoom.lines.Add(new Polyline()
+				{
+					Points = new PointCollection()
+					{
+						new Point(line.Points[0].X, line.Points[0].Y),
+						new Point(line.Points[1].X, line.Points[1].Y)
+					}
+				});
+			newRoom.AddPolygon();
+			newRoom.SetPolyline();
+
+			return newRoom;
 		}
 	}
 }
